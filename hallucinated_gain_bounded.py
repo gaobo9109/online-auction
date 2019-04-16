@@ -2,7 +2,7 @@ import utils
 import math
 import random
 
-class OfflineHallucinatedGain:
+class BoundedHallucinatedGain:
     def __init__(self, beta, max):
         self.alpha = int(math.sqrt(beta))
         self.max = max
@@ -30,7 +30,7 @@ class OfflineHallucinatedGain:
         self.update_score(bid_price)
 
 if __name__ == "__main__":
-    auction = OfflineHallucinatedGain(4, 128)
+    auction = BoundedHallucinatedGain(4, 128)
     seq = utils.gen_bid(10, 128)
     optimum_price_and_profit = utils.compute_optimum_price_and_profit(seq)
     for bid_price in seq:

@@ -3,7 +3,7 @@ import math
 import random
 from collections import deque
 
-class OnlineHallucinatedGain:
+class UnboundedDeterministic:
     def __init__(self, beta):
         self.alpha = int(math.sqrt(beta))
         self.experts = deque()
@@ -35,21 +35,21 @@ class OnlineHallucinatedGain:
 
         if not self.experts:
             self.experts.append(expert)
-            self.scores.append(utils.coin_flip() * expert)
+            self.scores.append(0)
         elif expert < self.experts[0]:
             lowest_expert = expert if k == 0 else self.alpha ** (k-1)
             current_expert = self.experts[0]
             while current_expert > lowest_expert:
                 current_expert = int(current_expert / self.alpha)
                 self.experts.appendleft(current_expert)
-                self.scores.appendleft((utils.coin_flip() + self.step_count) * current_expert)
+                self.scores.appendleft(self.step_count * current_expert)
         elif expert > self.experts[-1]:
             highest_expert = expert
             current_expert = self.experts[-1]
             while current_expert < highest_expert:
                 current_expert = current_expert * self.alpha
                 self.experts.append(current_expert)
-                self.scores.append(utils.coin_flip() * current_expert)
+                self.scores.append(0)
 
 
     def step(self, bid_price):
@@ -61,8 +61,8 @@ class OnlineHallucinatedGain:
         self.step_count += 1
 
 if __name__ == "__main__":
-    auction = OnlineHallucinatedGain(4)
-    seq = utils.gen_bid(10, 128)
+    auction = UnboundedDeterministic(4)
+    seq = utils.gen_bid(10, 200)
     optimum_price_and_profit = utils.compute_optimum_price_and_profit(seq)
     for bid_price in seq:
         auction.step(bid_price)
@@ -80,3 +80,5 @@ if __name__ == "__main__":
     print()
     print("Profit:")
     print(auction.profit)
+
+    
