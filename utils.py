@@ -1,4 +1,5 @@
 import random
+import math
 
 def gen_uniform_random_bid(num, max):
     result = []
@@ -16,8 +17,8 @@ def coin_flip(beta):
     head_count = 0
     tail_count = 0
     while tail_count == 0:
-        rand = random()
-        if rand < 1/sqrt(beta):
+        rand = random.random()
+        if rand < 1/math.sqrt(beta):
             head_count += 1
         else:
             tail_count += 1
