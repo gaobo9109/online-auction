@@ -30,45 +30,45 @@ class BoundedExpertLearning:
         self.update_score(bid_price)
 
 if __name__ == "__main__":
-    print("Input beta, num_bids, h, num_trials")
-    params=input().split()
-    beta = float(params[0])
-    num_bids,h,num_trials = map(int, params[1:])
-    #print(str(beta) + " " + str(num_bids) + " " + str(h) + " " + str(num_trials))
-    #print()
-    # beta, num_bids, h, num_trials = map(int, input().split())
-    total_optimum = 0
-    total_profit = 0
-    for i in range (0,num_trials):
-        auction = BoundedExpertLearning(beta, h) #
-        seq = utils.gen_uniform_random_bid(num_bids, h) #
-        optimum_price_and_profit = utils.compute_optimum_price_and_profit(seq)
-        for bid_price in seq:
-            auction.step(bid_price)
-        optimum_profit = optimum_price_and_profit[1]
-        total_optimum+=optimum_profit
-        total_profit+=auction.profit
-    
-        #print("sequence of bidders:")
-        #print(seq)
-        #print()
-        #print("Optimum price and profit:")
-        #print(optimum_price_and_profit)
-        #print()
-        #print("List of experts:")
-        #print(auction.experts)
-        #print()
-        #print("Expert scores:")
-        #print(auction.scores)
-        #print()
-        #print("Profit:")
-        #print(auction.profit)
-    print("average optimum profit:")
-    print(total_optimum/num_trials)
-    print()
-    print("average actual profit:")
-    print(total_profit/num_trials)
-    print()
-    print("average loss:")
-    print((total_optimum/beta-total_profit)/num_trials)
-    
+    #print("Input beta, num_bids, h, num_trials")
+    #params=input().split()
+    #beta = float(params[0])
+    #num_bids,h,num_trials = map(int, params[1:])
+    beta_arr = [1.1+0.1*i for i in range(30)]
+    h_arr = [10,20,30,40,50,100,200,500,1000,5000]
+    n_arr = [5,10,20,50,100,150,200,500,1000,5000]
+    num_trials=100
+    for beta in beta_arr:
+        for h in h_arr:
+            for n in n_arr:
+                print("beta  h  n")
+                #beta = beta_arr[a]
+                #h = h_arr[b]
+                #n = n_arr[c]
+                print(str(round(beta,1))+" " + str(h) + " " + str(n)+"\n")
+                total_optimum = 0
+                total_profit = 0
+                worst_loss = -h*n-1
+                for i in range (num_trials):
+                    auction = BoundedExpertLearning(beta, h) #
+                    seq = utils.gen_uniform_random_bid(n, h) #
+                    optimum_price_and_profit = utils.compute_optimum_price_and_profit(seq)
+                    for bid_price in seq:
+                        auction.step(bid_price)
+                    optimum_profit = optimum_price_and_profit[1]
+                    total_optimum+=optimum_profit
+                    total_profit+=auction.profit
+                    worst_loss=max(worst_loss, optimum_profit/beta-auction.profit)
+                print("average optimum profit:")
+                print(round(total_optimum/num_trials,3))
+                print("average actual profit:")
+                print(round(total_profit/num_trials,3))
+                print("average loss:")
+                print(round((total_optimum/beta-total_profit)/num_trials,3))
+                print("average loss per bid:") 
+                print(round((total_optimum/beta-total_profit)/num_trials/n,3))
+                print("worst loss:")
+                print(round(worst_loss,3))
+                print("average loss:")
+                print(round(worst_loss/n,3))
+                print()
