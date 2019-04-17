@@ -1,6 +1,6 @@
 import random
 
-def gen_bid(num, max):
+def gen_uniform_random_bid(num, max):
     result = []
     for i in range(num):
         result.append(random.randint(1, max))

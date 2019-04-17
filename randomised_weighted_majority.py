@@ -51,7 +51,7 @@ class RandomWeightedMajority:
 
 if __name__ == "__main__":
     auction = RandomWeightedMajority(4, 128)
-    seq = utils.gen_bid(10, 128)
+    seq = utils.gen_uniform_random_bid(10, 128)
     optimum_price_and_profit = utils.compute_optimum_price_and_profit(seq)
     for bid_price in seq:
         auction.step(bid_price)
