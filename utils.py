@@ -12,12 +12,12 @@ def compute_optimum_price_and_profit(prices):
     optimum_price_and_profit = max(zip(sorted_prices, profits), key=lambda x: x[1])
     return optimum_price_and_profit
 
-def coin_flip():
+def coin_flip(beta):
     head_count = 0
     tail_count = 0
     while tail_count == 0:
-        rand = random.randint(0, 1)
-        if rand == 1:
+        rand = random()
+        if rand < 1/sqrt(beta):
             head_count += 1
         else:
             tail_count += 1
