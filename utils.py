@@ -18,7 +18,7 @@ def coin_flip(beta):
     tail_count = 0
     while tail_count == 0:
         rand = random.random()
-        if rand < 1/math.sqrt(beta):
+        if rand < 1.0/float(math.sqrt(beta)):
             head_count += 1
         else:
             tail_count += 1
