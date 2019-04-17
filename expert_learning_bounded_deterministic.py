@@ -30,10 +30,6 @@ class BoundedExpertLearning:
         self.update_score(bid_price)
 
 if __name__ == "__main__":
-    #print("Input beta, num_bids, h, num_trials")
-    #params=input().split()
-    #beta = float(params[0])
-    #num_bids,h,num_trials = map(int, params[1:])
     beta_arr = [1.1+0.1*i for i in range(30)]
     h_arr = [10,20,30,40,50,100,200,500,1000,5000]
     n_arr = [5,10,20,50,100,150,200,500,1000,5000]
@@ -42,9 +38,6 @@ if __name__ == "__main__":
         for h in h_arr:
             for n in n_arr:
                 print("beta  h  n")
-                #beta = beta_arr[a]
-                #h = h_arr[b]
-                #n = n_arr[c]
                 print(str(round(beta,1))+" " + str(h) + " " + str(n)+"\n")
                 total_optimum = 0
                 total_profit = 0
@@ -61,14 +54,21 @@ if __name__ == "__main__":
                     worst_loss=max(worst_loss, optimum_profit/beta-auction.profit)
                 print("average optimum profit:")
                 print(round(total_optimum/num_trials,3))
+
                 print("average actual profit:")
                 print(round(total_profit/num_trials,3))
+
+                ## can compute later, might not need this
                 print("average loss:")
                 print(round((total_optimum/beta-total_profit)/num_trials,3))
+                ## can compute later, might not need this
                 print("average loss per bid:") 
                 print(round((total_optimum/beta-total_profit)/num_trials/n,3))
+                
                 print("worst loss:")
                 print(round(worst_loss,3))
+
+                ## can compute later, might not need this
                 print("average loss:")
                 print(round(worst_loss/n,3))
                 print()
