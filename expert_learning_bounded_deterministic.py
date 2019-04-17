@@ -1,6 +1,7 @@
 import utils
 import math
 import random
+import pandas as pd
 
 class BoundedExpertLearning:
     def __init__(self, beta, max):
@@ -30,15 +31,16 @@ class BoundedExpertLearning:
         self.update_score(bid_price)
 
 if __name__ == "__main__":
-    beta_arr = [1.1+0.1*i for i in range(30)]
+    beta_arr = [1.1+0.5*i for i in range(5)]
     h_arr = [10,20,30,40,50,100,200,500,1000,5000]
     n_arr = [5,10,20,50,100,150,200,500,1000,5000]
     num_trials=100
+    rows = []
     for beta in beta_arr:
         for h in h_arr:
             for n in n_arr:
                 print("beta  h  n")
-                print(str(round(beta,1))+" " + str(h) + " " + str(n)+"\n")
+                print(str(round(beta,1))+" " + str(h) + " " + str(n))
                 total_optimum = 0
                 total_profit = 0
                 worst_loss = -h*n-1
@@ -52,23 +54,40 @@ if __name__ == "__main__":
                     total_optimum+=optimum_profit
                     total_profit+=auction.profit
                     worst_loss=max(worst_loss, optimum_profit/beta-auction.profit)
-                print("average optimum profit:")
-                print(round(total_optimum/num_trials,3))
-
-                print("average actual profit:")
-                print(round(total_profit/num_trials,3))
-
-                ## can compute later, might not need this
-                print("average loss:")
-                print(round((total_optimum/beta-total_profit)/num_trials,3))
-                ## can compute later, might not need this
-                print("average loss per bid:") 
-                print(round((total_optimum/beta-total_profit)/num_trials/n,3))
                 
-                print("worst loss:")
-                print(round(worst_loss,3))
+                average_optimum_profit = round(total_optimum / num_trials, 3)
+                print("average optimum profit:")
+                print(average_optimum_profit)
+
+                average_actual_profit = round(total_profit/num_trials,3)
+                print("average actual profit:")
+                print(average_actual_profit)
 
                 ## can compute later, might not need this
+                average_loss = round((total_optimum/beta-total_profit)/num_trials,3)
                 print("average loss:")
-                print(round(worst_loss/n,3))
+                print(average_loss)
+
+                ## can compute later, might not need this
+                average_loss_per_bid = round((total_optimum/beta-total_profit)/num_trials/n,3)
+                print("average loss per bid:") 
+                print(average_loss_per_bid)
+                
+                worst_loss = round(worst_loss, 3)
+                print("worst loss:")
+                print(worst_loss)
+
+                ## can compute later, might not need this
+                average_worst_loss = round(worst_loss/n, 3)
+                print("average worst loss:")
+                print(average_worst_loss)
                 print()
+
+                row = [beta, h, n, average_optimum_profit, average_actual_profit, average_loss,
+                       average_loss_per_bid, worst_loss, average_worst_loss]
+                rows.append(row)
+
+    df = pd.DataFrame(rows, columns=["Beta Value", "Max Bid", "Num Bids", "Average Optimum Profit", 
+                                     "Average Actual Profit", "Average Loss", "Average Loss Per Bid", 
+                                     "Worst Loss", "Average Worst Loss"])
+    df.to_csv("expert_learning_bounded_deterministic.csv")
