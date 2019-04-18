@@ -1,6 +1,7 @@
 import utils
 import math
 import random
+import pandas as pd
 
 class BoundedHallucinatedGain:
     def __init__(self, beta, max):
@@ -31,9 +32,9 @@ class BoundedHallucinatedGain:
 
 if __name__ == "__main__":
     beta_arr = [1.1+0.1*i for i in range(30)]
-    h_arr = [10,20,30,40,50,100,200,500,1000,5000]
-    n_arr = [5,10,20,50,100,150,200,500,1000,5000]
-    num_trials=100
+    h_arr = [10,20,30,40,50,100,200,500,1000,5000,10000]
+    n_arr = [5,10,20,50,100,150,200,500,1000]
+    num_trials=50
     rows = []
     for beta in beta_arr:
         for h in h_arr:
@@ -54,7 +55,7 @@ if __name__ == "__main__":
                     total_profit+=auction.profit
                     worst_loss=max(worst_loss, optimum_profit/beta-auction.profit)
                 
-                 average_optimum_profit = round(total_optimum / num_trials, 3)
+                average_optimum_profit = round(total_optimum / num_trials, 3)
                 print("average optimum profit:")
                 print(average_optimum_profit)
 

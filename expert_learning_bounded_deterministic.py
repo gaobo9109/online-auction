@@ -31,10 +31,10 @@ class BoundedExpertLearning:
         self.update_score(bid_price)
 
 if __name__ == "__main__":
-    beta_arr = [1.1+0.5*i for i in range(5)]
-    h_arr = [10,20,30,40,50,100,200,500,1000,5000]
-    n_arr = [5,10,20,50,100,150,200,500,1000,5000]
-    num_trials=100
+    beta_arr = [1.1+0.1*i for i in range(30)]
+    h_arr = [10,20,30,40,50,100,200,500,1000,5000,10000]
+    n_arr = [5,10,20,50,100,150,200,500,1000]
+    num_trials=50
     rows = []
     for beta in beta_arr:
         for h in h_arr:
